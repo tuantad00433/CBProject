@@ -84,7 +84,7 @@
 
     <servlet>
         <servlet-name>AccountEndpoint</servlet-name>
-        <servlet-class>com.endpoint.AccountEndpoint</servlet-class>
+        <servlet-class>com.endpoint.AccAddrEndpoint</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AccountEndpoint</servlet-name>
