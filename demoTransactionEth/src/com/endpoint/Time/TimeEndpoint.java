@@ -1,6 +1,6 @@
-package com.endpoint;
+package com.endpoint.Time;
 
-import com.entity.TimePOJO;
+import com.entity.POJO.TimePOJO;
 import com.util.RESTUtil;
 
 import javax.servlet.ServletException;

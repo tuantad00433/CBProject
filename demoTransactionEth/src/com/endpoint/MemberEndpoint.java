@@ -1,6 +1,8 @@
 package com.endpoint;
 
 import com.entity.*;
+import com.google.gson.JsonSyntaxException;
+import com.googlecode.objectify.Key;
 import com.util.RESTUtil;
 import com.util.WalletUtil;
 //import com.util.WalletUtil;
@@ -46,31 +48,39 @@ public class MemberEndpoint extends HttpServlet {
     }
 
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String content = RESTUtil.readStringInput(request.getInputStream());
-        Member checkingObj = RESTUtil.gson.fromJson(content, Member.class);
-        Member obj = ofy().load().type(Member.class).id(checkingObj.getEmail()).now();
-        if (obj == null) {
-            response.setStatus(404);
-            ResponseMessage msg = new ResponseMessage(404, "Not Found", "Email is not found");
+        try {
+            String content = RESTUtil.readStringInput(request.getInputStream());
+            Member checkingObj = RESTUtil.gson.fromJson(content, Member.class);
+            Member obj = ofy().load().type(Member.class).filterKey(Key.create(Member.class,checkingObj.getEmail())).filter("status",1).first().now();
+            if (obj == null) {
+                response.setStatus(404);
+                ResponseMessage msg = new ResponseMessage(404, "Not Found", "Email is not found or has been deactivated.");
+                response.getWriter().print(RESTUtil.gson.toJson(msg));
+                return;
+            }
+
+            if (obj.getPassword().equals(checkingObj.getPassword()) == false) {
+                response.setStatus(403);
+                ResponseMessage msg = new ResponseMessage(403, "Forbidden", "Password is incorrect");
+                response.getWriter().print(RESTUtil.gson.toJson(msg));
+                return;
+            }
+            MemberCredential credential = new MemberCredential(obj.getUserId());
+            if (ofy().save().entity(credential).now() == null) {
+                response.setStatus(500);
+                ResponseMessage msg = new ResponseMessage(500, "Server Error", "Contact admin for support");
+                response.getWriter().print(RESTUtil.gson.toJson(msg));
+                return;
+            }
+            response.setStatus(200);
+            response.getWriter().print(RESTUtil.gson.toJson(credential));
+        } catch (JsonSyntaxException e) {
+            response.setStatus(400);
+            ResponseMessage msg = new ResponseMessage(400, "Bad Request", "Data is not well-form");
             response.getWriter().print(RESTUtil.gson.toJson(msg));
             return;
         }
 
-        if (obj.getPassword().equals(checkingObj.getPassword()) == false) {
-            response.setStatus(403);
-            ResponseMessage msg = new ResponseMessage(403, "Forbidden", "Username or password is incorrect");
-            response.getWriter().print(RESTUtil.gson.toJson(msg));
-            return;
-        }
-        MemberCredential credential = new MemberCredential(obj.getUserId());
-        if (ofy().save().entity(credential).now() == null) {
-            response.setStatus(500);
-            ResponseMessage msg = new ResponseMessage(500, "Server Error", "Contact admin for support");
-            response.getWriter().print(RESTUtil.gson.toJson(msg));
-            return;
-        }
-        response.setStatus(200);
-        response.getWriter().print(RESTUtil.gson.toJson(credential));
 
     }
 

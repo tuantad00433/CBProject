@@ -32,7 +32,7 @@ public class MemberCredential {
         secretToken = tokenKey;
         this.userId = userId;
         createdTime = System.currentTimeMillis();
-        expiredTime = createdTime + 60 * 1000;
+        expiredTime = createdTime + 3600 * 1000;
         status = 1;
     }
 

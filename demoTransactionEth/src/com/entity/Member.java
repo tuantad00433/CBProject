@@ -25,8 +25,7 @@ public class Member {
 
     public Member() {
         status = 1;
-        String id = UUID.randomUUID().toString();
-        this.userId = id;
+        this.userId = UUID.randomUUID().toString();
     }
 
     public String getEmail() {

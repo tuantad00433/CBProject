@@ -1,4 +1,4 @@
-package com.endpoint;
+package com.endpoint.Filter;
 
 import com.entity.APICredential;
 import com.entity.ResponseMessage;
