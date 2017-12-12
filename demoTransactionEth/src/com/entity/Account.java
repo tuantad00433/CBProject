@@ -35,10 +35,7 @@ public class Account {
     private String resource_path;
     @Index
     private String userId;
-    @Index
-    private String wallet;
-    @Unindex
-    private String password;
+
 
     public Account() {
 
@@ -47,7 +44,7 @@ public class Account {
     public Account(String userId) {
         this.userId = userId;
         id = UUID.randomUUID().toString();
-        password = UUID.randomUUID().toString();
+
 //        wallet = WalletUtil.createWalletFile(password);
         name = "My Wallet";
         currency = CurrencyType.ETH.toString();
@@ -141,22 +138,6 @@ public class Account {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(String wallet) {
-        this.wallet = wallet;
     }
 
     public HashMap<String, String> validate() {
