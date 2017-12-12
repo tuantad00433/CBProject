@@ -51,7 +51,7 @@ public class MemberEndpoint extends HttpServlet {
         try {
             String content = RESTUtil.readStringInput(request.getInputStream());
             Member checkingObj = RESTUtil.gson.fromJson(content, Member.class);
-            Member obj = ofy().load().type(Member.class).filterKey(Key.create(Member.class,checkingObj.getEmail())).filter("status",1).first().now();
+            Member obj = ofy().load().type(Member.class).filterKey(Key.create(Member.class, checkingObj.getEmail())).filter("status", 1).first().now();
             if (obj == null) {
                 response.setStatus(404);
                 ResponseMessage msg = new ResponseMessage(404, "Not Found", "Email is not found or has been deactivated.");
@@ -109,9 +109,10 @@ public class MemberEndpoint extends HttpServlet {
         objUser.setName(obj.getFirstName());
         objUser.setUsername(obj.getFirstName());
         Account objAccount = new Account(obj.getUserId());
+        Address objAddress = new Address(objAccount.getId());
         objAccount.setPrimary(true);
 
-        if (ofy().save().entity(obj).now() == null || ofy().save().entity(objUser).now() == null || ofy().save().entity(objAccount).now() == null) {
+        if (ofy().save().entity(obj).now() == null || ofy().save().entity(objUser).now() == null || ofy().save().entity(objAccount).now() == null || ofy().save().entity(objAddress).now() == null) {
             response.setStatus(500);
             ResponseMessage msg = new ResponseMessage(500, "Server Error", "Contact admin for support");
             response.getWriter().print(RESTUtil.gson.toJson(msg));

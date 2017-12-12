@@ -3,6 +3,8 @@ package com.entity;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Unindex;
+import com.util.WalletUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -27,10 +29,17 @@ public class Address {
     private String resource_path = "/v2/accounts/";
     @Index
     private String accountId;
+    @Unindex
+    private String wallet;
+    @Unindex
+    private String password;
 
     public Address(String accountId) {
         id = UUID.randomUUID().toString();
-        address = UUID.randomUUID().toString();
+        password = UUID.randomUUID().toString();
+        HashMap<String,String> walletData = WalletUtil.createWalletFile(password);
+        wallet = walletData.get("wallet");
+        address = walletData.get("walletAddress");
         name = "default address";
         this.accountId = accountId;
         network = "ethereum";
@@ -44,7 +53,10 @@ public class Address {
         this.name = name;
         this.accountId = accountId;
         id = UUID.randomUUID().toString();
-        address = UUID.randomUUID().toString();
+        password = UUID.randomUUID().toString();
+        HashMap<String,String> walletData = WalletUtil.createWalletFile(password);
+        wallet = walletData.get("wallet");
+        address = walletData.get("walletAddress");
         network = "ethereum";
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
@@ -53,11 +65,18 @@ public class Address {
 
     public Address() {
         id = UUID.randomUUID().toString();
-        address = UUID.randomUUID().toString();
         name = "default address";
         network = "etherium";
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {
