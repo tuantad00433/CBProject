@@ -1,5 +1,7 @@
-package com.entity;
+package com.entity.POJO;
 
+
+import com.entity.Time;
 
 public class TimePOJO {
     Time data;

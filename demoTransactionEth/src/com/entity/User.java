@@ -27,14 +27,17 @@ public class User {
     private final String resource = "user";
     @Index
     private final String resource_path = "/v2/user";
+    @Index
+    private int status;
 
     public User(String id) {
         this.id = id;
         this.avatar_url = "default";
+        status = 1;
     }
 
     public User() {
-
+        status=1;
     }
 
     public String getId() {

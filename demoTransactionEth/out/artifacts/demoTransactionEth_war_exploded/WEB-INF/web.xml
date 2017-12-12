@@ -17,7 +17,7 @@
 
     <filter>
         <filter-name>CORSFilter</filter-name>
-        <filter-class>com.endpoint.CORSFilter</filter-class>
+        <filter-class>com.endpoint.Filter.CORSFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>CORSFilter</filter-name>
@@ -26,16 +26,16 @@
 
     <filter>
         <filter-name>MemberFilter</filter-name>
-        <filter-class>com.endpoint.MemberFilter</filter-class>
+        <filter-class>com.endpoint.Filter.MemberFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>MemberFilter</filter-name>
-        <url-pattern>/v2/member/api_keys/new_modal/</url-pattern>
+        <url-pattern>/v2/api_keys/new_modal/*</url-pattern>
     </filter-mapping>
 
     <filter>
         <filter-name>APIFilter</filter-name>
-        <filter-class>com.endpoint.APIAuthFilter</filter-class>
+        <filter-class>com.endpoint.Filter.APIAuthFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>APIFilter</filter-name>
@@ -50,7 +50,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>APIKeyEndpoint</servlet-name>
-        <url-pattern>/v2/member/api_keys/new_modal/*</url-pattern>
+        <url-pattern>/v2/api_keys/new_modal/*</url-pattern>
     </servlet-mapping>
 
 
@@ -60,12 +60,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>MemberEndpoint</servlet-name>
-        <url-pattern>/v2/member/*</url-pattern>
+        <url-pattern>/v2/members/*</url-pattern>
     </servlet-mapping>
 
     <servlet>
         <servlet-name>TimeEndpoint</servlet-name>
-        <servlet-class>com.endpoint.TimeEndpoint</servlet-class>
+        <servlet-class>com.endpoint.Time.TimeEndpoint</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>TimeEndpoint</servlet-name>
@@ -84,7 +84,7 @@
 
     <servlet>
         <servlet-name>AccountEndpoint</servlet-name>
-        <servlet-class>com.endpoint.AccountEndpoint</servlet-class>
+        <servlet-class>com.endpoint.AccAddrEndpoint</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AccountEndpoint</servlet-name>

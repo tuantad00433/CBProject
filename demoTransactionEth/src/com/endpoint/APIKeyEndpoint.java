@@ -1,9 +1,6 @@
 package com.endpoint;
 
-import com.entity.APICredential;
-import com.entity.Member;
-import com.entity.ResponseMessage;
-import com.entity.User;
+import com.entity.*;
 import com.google.gson.JsonSyntaxException;
 import com.util.RESTUtil;
 
@@ -18,25 +15,9 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class APIKeyEndpoint extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String content = RESTUtil.readStringInput(req.getInputStream());
-
         try {
-            Member obj = RESTUtil.gson.fromJson(content, Member.class);
-            String userId = obj.getUserId();
-            if (userId == null || userId.length() == 0) {
-                resp.setStatus(400);
-                ResponseMessage msg = new ResponseMessage(400, "Bad Request", "UserId is missing");
-                resp.getWriter().print(RESTUtil.gson.toJson(msg));
-                return;
-            }
-            User checkingObj = ofy().load().type(User.class).id(userId).now();
-            if (checkingObj == null) {
-                resp.setStatus(400);
-                ResponseMessage msg = new ResponseMessage(404, "Bad Request", "User is not found");
-                resp.getWriter().print(RESTUtil.gson.toJson(msg));
-                return;
-            }
-            APICredential apiCredential = new APICredential(userId);
+            MemberCredential credential = ofy().load().type(MemberCredential.class).filter("tokenKey",req.getHeader("Authentication")).first().now();
+            APICredential apiCredential = new APICredential(credential.getUserId());
             if (ofy().save().entity(apiCredential) == null) {
                 resp.setStatus(500);
                 ResponseMessage msg = new ResponseMessage(500, "Server Error", "Contact admin for support");
@@ -51,7 +32,5 @@ public class APIKeyEndpoint extends HttpServlet {
             resp.getWriter().print(RESTUtil.gson.toJson(msg));
             return;
         }
-
-
     }
 }

@@ -1,5 +1,7 @@
 package com.entity;
 
+import com.entity.Enum.AccountType;
+import com.entity.Enum.CurrencyType;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -46,11 +48,11 @@ public class Account {
         this.userId = userId;
         id = UUID.randomUUID().toString();
         password = UUID.randomUUID().toString();
-        wallet = WalletUtil.createWalletFile(password);
+//        wallet = WalletUtil.createWalletFile(password);
         name = "My Wallet";
-        currency = CurrencyType.ETH;
+        currency = CurrencyType.ETH.toString();
         primary = false;
-        type = AccountType.WALLET;
+        type = AccountType.WALLET.toString();
         balance = new AccountBalance();
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();

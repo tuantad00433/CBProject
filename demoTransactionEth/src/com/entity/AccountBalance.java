@@ -1,11 +1,13 @@
 package com.entity;
 
+import com.entity.Enum.CurrencyType;
+
 public class AccountBalance {
    private double amount;
    private String currency;
 
    public AccountBalance(){
-       currency = CurrencyType.ETH;
+       currency = CurrencyType.ETH.toString();
        amount = 0;
    }
    public AccountBalance(double amount, String currency){
