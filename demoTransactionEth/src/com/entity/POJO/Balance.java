@@ -1,16 +1,18 @@
-package com.entity;
+package com.entity.POJO;
 
 import com.entity.Enum.CurrencyType;
 
-public class AccountBalance {
+import java.math.BigDecimal;
+
+public class Balance {
    private double amount;
    private String currency;
 
-   public AccountBalance(){
+   public Balance(){
        currency = CurrencyType.ETH.toString();
        amount = 0;
    }
-   public AccountBalance(double amount, String currency){
+   public Balance(double amount, String currency){
        this.amount = amount;
        this.currency = currency;
    }

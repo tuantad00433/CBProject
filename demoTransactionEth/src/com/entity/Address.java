@@ -1,11 +1,21 @@
 package com.entity;
 
+import com.entity.Enum.CurrencyType;
+import com.entity.POJO.Balance;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Unindex;
 import com.util.WalletUtil;
+import org.web3j.protocol.Web3j;
+import org.web3j.protocol.core.DefaultBlockParameterName;
+import org.web3j.protocol.core.methods.response.EthGetBalance;
+import org.web3j.protocol.core.methods.response.Web3ClientVersion;
+import org.web3j.protocol.http.HttpService;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -33,20 +43,22 @@ public class Address {
     private String wallet;
     @Unindex
     private String password;
+    @Unindex
+    private Balance balance;
 
     public Address(String accountId) {
         id = UUID.randomUUID().toString();
         password = UUID.randomUUID().toString();
-        HashMap<String,String> walletData = WalletUtil.createWalletFile(password);
+        HashMap<String, String> walletData = WalletUtil.createWalletFile(password);
         wallet = walletData.get("wallet");
-        address = walletData.get("walletAddress");
+        address = "0x"+ walletData.get("walletAddress");
         name = "default address";
         this.accountId = accountId;
         network = "ethereum";
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
         resource_path += accountId + "/address/" + this.id;
-
+        balance = new Balance();
     }
 
     public Address(String accountId, String name) {
@@ -54,13 +66,14 @@ public class Address {
         this.accountId = accountId;
         id = UUID.randomUUID().toString();
         password = UUID.randomUUID().toString();
-        HashMap<String,String> walletData = WalletUtil.createWalletFile(password);
+        HashMap<String, String> walletData = WalletUtil.createWalletFile(password);
         wallet = walletData.get("wallet");
-        address = walletData.get("walletAddress");
+        address ="0x"+ walletData.get("walletAddress");
         network = "ethereum";
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
         resource_path += accountId + "/address/" + this.id;
+        balance = new Balance();
     }
 
     public Address() {
@@ -69,6 +82,22 @@ public class Address {
         network = "etherium";
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
+    }
+
+    public String getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(String wallet) {
+        this.wallet = wallet;
+    }
+
+    public Balance getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Balance balance) {
+        this.balance = balance;
     }
 
     public String getPassword() {
@@ -145,6 +174,24 @@ public class Address {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
+    }
+
+    public Balance getLastestBalance() {
+        Balance balance = new Balance();
+        try {
+            Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/4ANomGN5hGuPbpCZEIoj"));
+            Web3ClientVersion web3ClientVersion = web3j.web3ClientVersion().send();
+            EthGetBalance ethGetBalance = web3j.ethGetBalance(this.address, DefaultBlockParameterName.LATEST).sendAsync().get();
+            BigInteger intObj = ethGetBalance.getBalance();
+            BigDecimal decimalObj = new BigDecimal(intObj);
+            double amount = decimalObj.doubleValue();
+            balance.setCurrency(CurrencyType.ETH.toString());
+            balance.setAmount(amount);
+            return balance;
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
+            return balance;
+        }
     }
 
     public HashMap<String, String> validate() {

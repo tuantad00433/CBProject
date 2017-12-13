@@ -123,4 +123,6 @@ public class MemberEndpoint extends HttpServlet {
         response.getWriter().print(RESTUtil.gson.toJson(obj));
 
     }
+
+
 }

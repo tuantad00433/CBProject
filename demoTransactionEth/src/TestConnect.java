@@ -1,3 +1,4 @@
+import com.entity.Address;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.web3j.crypto.*;
 import org.web3j.protocol.Web3j;
@@ -11,23 +12,28 @@ import org.web3j.utils.Convert;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class TestConnect {
     public void connectTest() throws Exception{
         Web3j web3j = Web3j.build(new HttpService("https://rinkeby.infura.io/4ANomGN5hGuPbpCZEIoj"));
-        Web3ClientVersion web3ClientVersion = web3j.web3ClientVersion().send();
-        System.out.println(web3ClientVersion.getWeb3ClientVersion());
+//        Web3ClientVersion web3ClientVersion = web3j.web3ClientVersion().send();
+//        System.out.println(web3ClientVersion.getWeb3ClientVersion());
 
         ObjectMapper obj = new ObjectMapper();
-        WalletFile walletFile = obj.readValue("{\"address\":\"1a1d4c9a06409e6c8d03951b4c2e1771fe3df489\",\"id\":\"d40bf842-4740-46a8-88b6-e2a5df5bf3fd\",\"version\":3,\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"279bfbe0c7b6891bf58eba0ebd0ab36ee8ac9cc84c1dcc15791cce9368a27cb4\",\"cipherparams\":{\"iv\":\"4067be6fb4f031db0965ec17569f73ad\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":5,\"p\":10,\"r\":8,\"salt\":\"96ab00eea0f9669b4efdcfa4ed0aa3dec57683a592bfb1504d0d66ed5ac7b3a3\"},\"mac\":\"ffbcf9ea496be59651d9c71cfe1ffdb7f3cb7b7a401a8986895ad52a3d2a974f\"}}",WalletFile.class);
-        Credentials credentials = Credentials.create(Wallet.decrypt("abcd",walletFile));
-        EthGetBalance ethGetBalance = web3j.ethGetBalance("0x1a1d4c9a06409e6c8d03951b4c2e1771fe3df489", DefaultBlockParameterName.LATEST).sendAsync().get();
+//        WalletFile walletFile = obj.readValue("{\"address\":\"802d2d518738803d1e0adb5e990dcbf158e42574\",\"id\":\"ea54d7de-ceb2-4e6e-902c-b5e960afe984\",\"version\":3,\"crypto\":{\"cipher\":\"aes-128-ctr\",\"ciphertext\":\"d96420ddcd364a7400b013297cb552986ebfa8333ba5bbef03a3878e18155a53\",\"cipherparams\":{\"iv\":\"b5072a94724afac015342e912049154b\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"dklen\":32,\"n\":5,\"p\":10,\"r\":8,\"salt\":\"8a0c9e2046cef454fd60e0e65d4d107dedbc75de5808b2fe1e37c9c9599e833d\"},\"mac\":\"e38236064a7e30679a9c13f4accffb92bb718d8a3373b7e20e80f24934304393\"}}",WalletFile.class);
+//        Credentials credentials = Credentials.create(Wallet.decrypt("45d3020c-7995-4e68-9654-2b7b3b274ba7",walletFile));
+        EthGetBalance ethGetBalance = web3j.ethGetBalance("0x802d2d518738803d1e0adb5e990dcbf158e42574", DefaultBlockParameterName.LATEST).sendAsync().get();
         BigInteger wei = ethGetBalance.getBalance();
+        double amount = wei.doubleValue();
+        System.out.println(amount);
         System.out.println(wei);
 
-        TransactionReceipt transactionReceipt = Transfer.sendFunds(web3j,credentials,"0xB279182D99E65703F0076E4812653aaB85FCA0f0", BigDecimal.valueOf(0), Convert.Unit.ETHER).send();
-
+//        TransactionReceipt transactionReceipt = Transfer.sendFunds(web3j,credentials,"0x8ed1fd5a58fc3eaf3a0c5f1fa0335c68c96ea2e4", BigDecimal.valueOf(0.001), Convert.Unit.ETHER).send();
+//        EthGetBalance ethGetBalance = web3j.ethGetBalance("0x8ed1fd5a58fc3eaf3a0c5f1fa0335c68c96ea2e4", DefaultBlockParameterName.LATEST).sendAsync().get();
+//        System.out.println(ethGetBalance.getBalance());
     }
+
 
     public static void main(String[] args) throws  Exception {
         new TestConnect().connectTest();

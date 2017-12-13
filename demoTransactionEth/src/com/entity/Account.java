@@ -2,11 +2,10 @@ package com.entity;
 
 import com.entity.Enum.AccountType;
 import com.entity.Enum.CurrencyType;
+import com.entity.POJO.Balance;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Unindex;
-import com.util.WalletUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -24,7 +23,7 @@ public class Account {
     @Index
     private String type;
     @Index
-    private AccountBalance balance;
+    private Balance balance;
     @Index
     private String created_at;
     @Index
@@ -44,13 +43,11 @@ public class Account {
     public Account(String userId) {
         this.userId = userId;
         id = UUID.randomUUID().toString();
-
-//        wallet = WalletUtil.createWalletFile(password);
         name = "My Wallet";
         currency = CurrencyType.ETH.toString();
         primary = false;
         type = AccountType.WALLET.toString();
-        balance = new AccountBalance();
+        balance = new Balance();
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
         resource_path = "/v2/accounts/" + id;
@@ -96,11 +93,11 @@ public class Account {
         this.type = type;
     }
 
-    public AccountBalance getBalance() {
+    public Balance getBalance() {
         return balance;
     }
 
-    public void setBalance(AccountBalance balance) {
+    public void setBalance(Balance balance) {
         this.balance = balance;
     }
 
