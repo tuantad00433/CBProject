@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class MemberEndpoint extends HttpServlet {
-    private static Logger LOGGER_MemberEndpoint = Logger.getLogger(MemberEndpoint.class.getName());
+    private  Logger LOGGER = Logger.getLogger(MemberEndpoint.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -108,7 +108,7 @@ public class MemberEndpoint extends HttpServlet {
         User objUser = new User(obj.getUserId());
         objUser.setName(obj.getFirstName());
         objUser.setUsername(obj.getFirstName());
-        Account objAccount = new Account(obj.getUserId());
+        Account objAccount = new Account(obj.getUserId(),null);
         Address objAddress = new Address(objAccount.getId());
         objAccount.setPrimary(true);
 

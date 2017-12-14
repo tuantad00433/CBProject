@@ -150,7 +150,7 @@ public class AccAddrEndpoint extends HttpServlet {
             String APIKey = req.getHeader("CB-ACCESS-KEY");
             APICredential credential = ofy().load().type(APICredential.class).id(APIKey).now();
             String userId = credential.getUserId();
-            Account obj = new Account(userId);
+            Account obj = new Account(userId,null);
             obj.setName(account.getName());
             if (ofy().save().entity(obj).now() == null) {
                 resp.setStatus(500);

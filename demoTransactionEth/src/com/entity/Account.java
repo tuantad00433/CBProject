@@ -34,13 +34,15 @@ public class Account {
     private String resource_path;
     @Index
     private String userId;
+    @Index
+    private String URLNotification;
 
 
     public Account() {
 
     }
 
-    public Account(String userId) {
+    public Account(String userId,String URLNotification) {
         this.userId = userId;
         id = UUID.randomUUID().toString();
         name = "My Wallet";
@@ -51,6 +53,15 @@ public class Account {
         created_at = Time.getTimeUTC();
         updated_at = Time.getTimeUTC();
         resource_path = "/v2/accounts/" + id;
+        this.URLNotification = URLNotification;
+    }
+
+    public String getURLNotification() {
+        return URLNotification;
+    }
+
+    public void setURLNotification(String URLNotification) {
+        this.URLNotification = URLNotification;
     }
 
     public String getId() {

@@ -91,6 +91,24 @@
         <url-pattern>/v2/accounts/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>GetAllAddresses</servlet-name>
+        <servlet-class>com.endpoint.GetAllAddresses</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAllAddresses</servlet-name>
+        <url-pattern>/v2/addresses</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SubcribeAddress</servlet-name>
+        <servlet-class>com.endpoint.SubcribeAddress</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SubcribeAddress</servlet-name>
+        <url-pattern>/v2/log/</url-pattern>
+    </servlet-mapping>
+
     <!--CRON-->
     <servlet>
         <servlet-name>BalanceCrom</servlet-name>
