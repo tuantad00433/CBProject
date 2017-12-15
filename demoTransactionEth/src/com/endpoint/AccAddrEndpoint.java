@@ -24,12 +24,16 @@ import com.googlecode.objectify.cmd.*;
 public class AccAddrEndpoint extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int action = 1; //1-Get List Address of an account.
+        int action = 1; //1-Get List Address of an account, 2-Get Account By Id,
         String uriSplit[] = req.getRequestURI().split("/");
         switch (uriSplit.length) {
             case 5:
                 action = 1;
                 break;
+            case 4:
+                action = 2;
+                break;
+
             default:
                 resp.setStatus(400);
                 ResponseMessage msg = new ResponseMessage(400, "Bad Request", "URI is invalid");
@@ -40,12 +44,28 @@ public class AccAddrEndpoint extends HttpServlet {
             case 1:
                 getListAddresses(req, resp, uriSplit);
                 break;
+            case 2:
+                getAccountById(req, resp);
+                break;
             default:
                 resp.setStatus(400);
                 ResponseMessage msg = new ResponseMessage(400, "Bad Request", "URI is invalid");
                 resp.getWriter().print(RESTUtil.gson.toJson(msg));
                 return;
         }
+
+    }
+    
+
+    private void getAccountById(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String uriSplit[] = req.getRequestURI().split("/");
+        String accountId = uriSplit[uriSplit.length - 1];
+        Account obj = ofy().load().type(Account.class).id(accountId).now();
+        if (obj == null) {
+            resp.getWriter().print("NULL ADDRESS");
+            return;
+        }
+        resp.getWriter().print(RESTUtil.gson.toJson(obj));
 
     }
 
@@ -150,7 +170,7 @@ public class AccAddrEndpoint extends HttpServlet {
             String APIKey = req.getHeader("CB-ACCESS-KEY");
             APICredential credential = ofy().load().type(APICredential.class).id(APIKey).now();
             String userId = credential.getUserId();
-            Account obj = new Account(userId,null);
+            Account obj = new Account(userId, null);
             obj.setName(account.getName());
             if (ofy().save().entity(obj).now() == null) {
                 resp.setStatus(500);

@@ -97,7 +97,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>GetAllAddresses</servlet-name>
-        <url-pattern>/v2/addresses</url-pattern>
+        <url-pattern>/v2/addresses/*</url-pattern>
     </servlet-mapping>
     
     <servlet>
