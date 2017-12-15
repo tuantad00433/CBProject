@@ -99,15 +99,17 @@
         <servlet-name>GetAllAddresses</servlet-name>
         <url-pattern>/v2/addresses</url-pattern>
     </servlet-mapping>
-
+    
     <servlet>
-        <servlet-name>SubcribeAddress</servlet-name>
-        <servlet-class>com.endpoint.SubcribeAddress</servlet-class>
+        <servlet-name>Notification</servlet-name>
+        <servlet-class>com.endpoint.NotificationEndpoint</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>SubcribeAddress</servlet-name>
-        <url-pattern>/v2/log/</url-pattern>
+        <servlet-name>Notification</servlet-name>
+        <url-pattern>/v2/notifications</url-pattern>
     </servlet-mapping>
+
+
 
     <!--CRON-->
 

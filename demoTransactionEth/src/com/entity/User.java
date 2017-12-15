@@ -26,7 +26,7 @@ public class User {
     @Index
     private final String resource = "user";
     @Index
-    private final String resource_path = "/v2/user";
+    private String resource_path = "/v2/user/";
     @Index
     private int status;
 
@@ -34,6 +34,7 @@ public class User {
         this.id = id;
         this.avatar_url = "default";
         status = 1;
+        resource_path +=id;
     }
 
     public User() {

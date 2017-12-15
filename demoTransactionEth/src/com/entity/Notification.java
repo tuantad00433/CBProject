@@ -1,14 +1,11 @@
 package com.entity;
-
-import com.entity.POJO.Balance;
-import com.entity.POJO.Pagination;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
-import com.util.RESTUtil;
 
 import java.util.HashMap;
 import java.util.UUID;
+
 
 @Entity
 public class Notification {
@@ -22,6 +19,8 @@ public class Notification {
     private HashMap<String, Object> user;
     @Index
     private HashMap<String, Object> account;
+    @Index
+    private HashMap<String,Object> additionalData;
     @Index
     private String created_at;
     @Index
@@ -37,14 +36,26 @@ public class Notification {
     public Notification() {
         id = UUID.randomUUID().toString();
         resource_path = "/v2/notifications/"+id;
+        created_at = Time.getTimeUTC();
+        updated_at = Time.getTimeUTC();
     }
     public Notification(String userId, String accountId) {
         id = UUID.randomUUID().toString();
         resource_path = "/v2/notifications/"+id;
         user.put("id",userId);
         account.put("id",accountId);
+        created_at = Time.getTimeUTC();
+        updated_at = Time.getTimeUTC();
+        delivery_attempts = 0;
     }
 
+    public HashMap<String, Object> getAdditionalData() {
+        return additionalData;
+    }
+
+    public void setAdditionalData(HashMap<String, Object> additionalData) {
+        this.additionalData = additionalData;
+    }
 
     public String getId() {
         return id;
@@ -137,5 +148,7 @@ public class Notification {
     public void setSubscriber(HashMap<String, Object> subscriber) {
         this.subscriber = subscriber;
     }
+
+
 
 }
