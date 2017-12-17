@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!--Filter-->
+
+    <filter>
+        <filter-name>ObjectifyFilter</filter-name>
+        <filter-class>com.googlecode.objectify.ObjectifyFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ObjectifyFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>com.endpoint.Filter.CORSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>MemberFilter</filter-name>
+        <filter-class>com.endpoint.Filter.MemberFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>MemberFilter</filter-name>
+        <url-pattern>/v2/api_keys/new_modal/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>APIFilter</filter-name>
+        <filter-class>com.endpoint.Filter.APIAuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>APIFilter</filter-name>
+        <url-pattern>/v2/users/*</url-pattern>
+        <url-pattern>/v2/accounts/*</url-pattern>
+    </filter-mapping>
+
+    <!--API-->
+    <servlet>
+        <servlet-name>APIKeyEndpoint</servlet-name>
+        <servlet-class>com.endpoint.APIKeyEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>APIKeyEndpoint</servlet-name>
+        <url-pattern>/v2/api_keys/new_modal/*</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>MemberEndpoint</servlet-name>
+        <servlet-class>com.endpoint.MemberEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MemberEndpoint</servlet-name>
+        <url-pattern>/v2/members/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>TimeEndpoint</servlet-name>
+        <servlet-class>com.endpoint.Time.TimeEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TimeEndpoint</servlet-name>
+        <url-pattern>/v2/time</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UserEndpoint</servlet-name>
+        <servlet-class>com.endpoint.UserEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserEndpoint</servlet-name>
+        <url-pattern>/v2/users/*</url-pattern>
+        <url-pattern>/v2/user/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountEndpoint</servlet-name>
+        <servlet-class>com.endpoint.AccAddrEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountEndpoint</servlet-name>
+        <url-pattern>/v2/accounts/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetAllAddresses</servlet-name>
+        <servlet-class>com.endpoint.GetAllAddresses</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetAllAddresses</servlet-name>
+        <url-pattern>/v2/addresses/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Notification</servlet-name>
+        <servlet-class>com.endpoint.NotificationEndpoint</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Notification</servlet-name>
+        <url-pattern>/v2/notifications</url-pattern>
+    </servlet-mapping>
+
+
+
+    <!--CRON-->
+
+</web-app>
